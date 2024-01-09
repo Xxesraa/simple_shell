@@ -1,19 +1,19 @@
 #include "shell.h"
 
 /**
- * display_pro - display prompt
+ * display_pr - display print
  * Return: nothing
 */
-void display_pro(void)
+void display_pr(void)
 {
-	printf("#cisfun$ ");
+	printf("$ ");
 }
 /**
- * execute_com - execute command
+ * execute_co - execute commond
  * @a: args
  * Return: nothing
 */
-void execute_com(char **a)
+void execute_co(char **a)
 {
 	pid_t cpid;
 	int s;
@@ -40,11 +40,12 @@ void execute_com(char **a)
 	}
 }
 /**
- * parse_inp - parse input
+ * parse_in - parse input
  * @i: input
  * @a: args
+ * Return: nothing
 */
-void parse_inp(char *i, char **a)
+void parse_in(char *i, char **a)
 {
 	int j = 0;
 	char *token = strtok(i, " ");
@@ -57,9 +58,23 @@ void parse_inp(char *i, char **a)
 
 	a[j] = NULL;
 }
-
 /**
- * main - Entry point
+ * display_e - display envsion
+ * Return: nothing
+*/
+void display_e(void)
+{
+	extern char **e;
+	char **env = e;
+
+	while (*env != NULL)
+	{
+		printf("%s\n", *env);
+		env++;
+	}
+}
+/**
+ * main - entry point
  * Return: 0
 */
 int main(void)
@@ -69,7 +84,7 @@ int main(void)
 
 	while (1)
 	{
-		display_pro();
+		display_pr();
 
 		if (fgets(i, sizeof(i), stdin) == NULL)
 		{
@@ -78,15 +93,31 @@ int main(void)
 		}
 
 		i[strcspn(i, "\n")] = '\0';
+
 		if (strlen(i) > 0)
 		{
-			parse_inp(i, a);
-			execute_com(a);
+			parse_in(i, a);
+			if (strcmp(a[0], "exit") == 0)
+			{
+				exit(0);
+			}
+			else if (strcmp(a[0], "env") == 0)
+			{
+				display_e();
+			}
+			else
+			{
+				if (access(a[0], X_OK) != -1)
+				{
+					execute_co(a);
+				}
+				else
+				{
+					fprintf(stderr, "Command not found: %s\n", a[0]);
+				}
+			}
 		}
 	}
-
 	printf("\n");
-
 	return (0);
 }
-

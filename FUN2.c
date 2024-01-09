@@ -1,33 +1,33 @@
 #include "shell.h"
 /**
- * display_prompt - display prompt
+ * display_prom - display prompt
  * Return: nothing
 */
-void display_prompt(void)
+void display_prom(void)
 {
 	printf(":) ");
 }
 /**
- * execute_command - execute command
- * @args: args
+ * execute_comm - execute command
+ * @a: args
  * Return: nothing
 */
-void execute_command(char **args)
+void execute_comm(char **a)
 {
-	pid_t child_pid;
-	int status;
+	pid_t cpid;
+	int s;
 
-	child_pid = fork();
+	cpid = fork();
 
-	if (child_pid == -1)
+	if (cpid == -1)
 	{
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
 
-	if (child_pid == 0)
+	if (cpid == 0)
 	{
-		if (execvp(args[0], args) == -1)
+		if (execvp(a[0], a) == -1)
 		{
 			perror("execvp");
 			exit(EXIT_FAILURE);
@@ -35,27 +35,27 @@ void execute_command(char **args)
 	}
 	else
 	{
-		waitpid(child_pid, &status, 0);
+		waitpid(cpid, &s, 0);
 	}
 }
 /**
- * parse_input - parse input
- * @input: input
- * @args: args
+ * parse_inpu - parse input
+ * @i: input
+ * @a: args
  * Return: nothing
 */
-void parse_input(char *input, char **args)
+void parse_inpu(char *i, char **a)
 {
-	int i = 0;
-	char *token = strtok(input, " ");
+	int j = 0;
+	char *token = strtok(i, " ");
 
 	while (token != NULL)
 	{
-		args[i++] = token;
+		a[j++] = token;
 		token = strtok(NULL, " ");
 	}
 
-	args[i] = NULL;
+	a[j] = NULL;
 }
 /**
  * main - Entry point
@@ -63,32 +63,32 @@ void parse_input(char *input, char **args)
 */
 int main(void)
 {
-	char input[MAX_INPUT];
-	char *args[MAX_ARGS];
+	char i[MAX_INPUT];
+	char *a[MAX_ARGS];
 
 	while (1)
 	{
-		display_prompt();
+		display_prom();
 
-		if (fgets(input, sizeof(input), stdin) == NULL)
+		if (fgets(i, sizeof(i), stdin) == NULL)
 		{
 			printf("\n");
 			break;
 		}
 
-		input[strcspn(input, "\n")] = '\0';
+		i[strcspn(i, "\n")] = '\0';
 
-		if (strlen(input) > 0)
+		if (strlen(i) > 0)
 		{
-			parse_input(input, args);
+			parse_inpu(i, a);
 
-			if (access(args[0], X_OK) != -1)
+			if (access(a[0], X_OK) != -1)
 			{
-				execute_command(args);
+				execute_comm(a);
 			}
 			else
 			{
-				fprintf(stderr, "Command not found: %s\n", args[0]);
+				fprintf(stderr, "Command not found: %s\n", a[0]);
 			}
 		}
 	}

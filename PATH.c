@@ -1,36 +1,36 @@
 #include "shell.h"
 
 /**
- * display_prompt - display prompt
+ * d_prompt - display prompt
  * Return : nothing
 */
 
-void display_prompt(void)
+void d_prompt(void)
 {
 	printf("#cisfun$ ");
 }
 
 /**
- * execute_command - execute command
- * @command: command
+ * execute_comma - execute command
+ * @c: command
  * Return : 0
 */
-void execute_command(char *command)
+void execute_comma(char *c)
 {
-	pid_t child_pid;
-	int status;
+	pid_t cpid;
+	int s;
 
-	child_pid = fork();
+	cpid = fork();
 
-	if (child_pid == -1)
+	if (cpid == -1)
 	{
 		perror("fork");
 		exit(EXIT_FAILURE);
 	}
 
-	if (child_pid == 0)
+	if (cpid == 0)
 	{
-		if (execlp(command, command, NULL) == -1)
+		if (execlp(c, c, NULL) == -1)
 		{
 			perror("execlp");
 			exit(EXIT_FAILURE);
@@ -38,7 +38,7 @@ void execute_command(char *command)
 	}
 	else
 	{
-		waitpid(child_pid, &status, 0);
+		waitpid(cpid, &s, 0);
 	}
 }
 /**
@@ -47,23 +47,23 @@ void execute_command(char *command)
 */
 int main(void)
 {
-	char input[MAX_INPUT];
+	char i[MAX_INPUT];
 
 	while (1)
 	{
-		display_prompt();
+		d_prompt();
 
-		if (fgets(input, sizeof(input), stdin) == NULL)
+		if (fgets(i, sizeof(i), stdin) == NULL)
 		{
 			printf("\n");
 			break;
 		}
 
-		input[strcspn(input, "\n")] = '\0';
+		i[strcspn(i, "\n")] = '\0';
 
-		if (strlen(input) > 0)
+		if (strlen(i) > 0)
 		{
-			execute_command(input);
+			execute_comma(i);
 		}
 	}
 
