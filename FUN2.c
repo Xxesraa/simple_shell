@@ -57,44 +57,4 @@ void parse_inpu(char *i, char **a)
 
 	a[j] = NULL;
 }
-/**
- * main - Entry point
- * Return: 0
-*/
-int main(void)
-{
-	char i[MAX_INPUT];
-	char *a[MAX_ARGS];
-
-	while (1)
-	{
-		display_prom();
-
-		if (fgets(i, sizeof(i), stdin) == NULL)
-		{
-			printf("\n");
-			break;
-		}
-
-		i[strcspn(i, "\n")] = '\0';
-
-		if (strlen(i) > 0)
-		{
-			parse_inpu(i, a);
-
-			if (access(a[0], X_OK) != -1)
-			{
-				execute_comm(a);
-			}
-			else
-			{
-				fprintf(stderr, "Command not found: %s\n", a[0]);
-			}
-		}
-	}
-
-	printf("\n");
-
-	return (0);
-}
 

@@ -64,60 +64,12 @@ void parse_in(char *i, char **a)
 */
 void display_e(void)
 {
-	extern char **e;
-	char **env = e;
+	extern char **environ;
+	char **env = environ;
 
 	while (*env != NULL)
 	{
 		printf("%s\n", *env);
 		env++;
 	}
-}
-/**
- * main - entry point
- * Return: 0
-*/
-int main(void)
-{
-	char i[MAX_INPUT];
-	char *a[MAX_ARGS];
-
-	while (1)
-	{
-		display_pr();
-
-		if (fgets(i, sizeof(i), stdin) == NULL)
-		{
-			printf("\n");
-			break;
-		}
-
-		i[strcspn(i, "\n")] = '\0';
-
-		if (strlen(i) > 0)
-		{
-			parse_in(i, a);
-			if (strcmp(a[0], "exit") == 0)
-			{
-				exit(0);
-			}
-			else if (strcmp(a[0], "env") == 0)
-			{
-				display_e();
-			}
-			else
-			{
-				if (access(a[0], X_OK) != -1)
-				{
-					execute_co(a);
-				}
-				else
-				{
-					fprintf(stderr, "Command not found: %s\n", a[0]);
-				}
-			}
-		}
-	}
-	printf("\n");
-	return (0);
 }

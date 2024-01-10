@@ -58,35 +58,3 @@ void parse_inp(char *i, char **a)
 	a[j] = NULL;
 }
 
-/**
- * main - Entry point
- * Return: 0
-*/
-int main(void)
-{
-	char i[MAX_INPUT];
-	char *a[MAX_ARGS];
-
-	while (1)
-	{
-		display_pro();
-
-		if (fgets(i, sizeof(i), stdin) == NULL)
-		{
-			printf("\n");
-			break;
-		}
-
-		i[strcspn(i, "\n")] = '\0';
-		if (strlen(i) > 0)
-		{
-			parse_inp(i, a);
-			execute_com(a);
-		}
-	}
-
-	printf("\n");
-
-	return (0);
-}
-

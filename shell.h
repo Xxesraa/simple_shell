@@ -10,7 +10,7 @@
 
 #define MAX_INPUT 1024
 #define MAX_ARGS 64
-extern char **e;
+extern char **environ;
 
 /*FUN1.C*/
 void display_pro(void);
@@ -38,4 +38,11 @@ void display_e(void);
 
 void execute_comma(char *c);
 void d_prompt(void);
+
+/*fun.c*/
+int _strcmp(char *s1, char *s2);
+int _strlen(char *s);
+
+
+
 #endif
